@@ -17,7 +17,7 @@
 
 #include <cstdio>
 #include <cstdlib>
-#include <getopt.h>
+#include "getopt.h"
 
 #include "vectornd.h"
 #include "geometry.h"
@@ -57,53 +57,59 @@ void version ()
 
 int main (int argc, char **argv)
 {
-//  command line options
-    static struct option const long_options[] = {
-        {"merge-vertices", no_argument, NULL, 'm'},
-        {"fill-holes", no_argument, NULL, 'f'},
-        {"stich-curves", no_argument, NULL, 's'},
-        {"help", no_argument, NULL, 'h'},
-        {"version", no_argument, NULL, 'v'},
-        {NULL, 0, NULL, 0}
-    };
+////  command line options
+//    static struct option const long_options[] = {
+//        {"merge-vertices", no_argument, NULL, 'm'},
+//        {"fill-holes", no_argument, NULL, 'f'},
+//        {"stich-curves", no_argument, NULL, 's'},
+//        {"help", no_argument, NULL, 'h'},
+//        {"version", no_argument, NULL, 'v'},
+//        {NULL, 0, NULL, 0}
+//    };
+//
+//// Variables that are set according to the specified options.
+//    bool merge_vertices = false;
+//    bool fill_holes     = false;
+//    bool stich_curves   = false;
+//    bool tolerance_val  = false;
+//
+//// Parse command line options.
+//    int c; 
+//    while ((c = getopt_long (argc, argv, "mfsvh", long_options, NULL)) != -1) {
+//        switch (c) {
+//        case 'm':
+//            merge_vertices = true;
+//            break;
+//        case 'f':
+//            fill_holes = true;
+//            break;
+//        case 's':
+//            stich_curves = true;
+//            break;
+//        case 'v':
+//            version();
+//            break;
+//        default:
+//            usage (EXIT_FAILURE);
+//        }
+//    }
 
-// Variables that are set according to the specified options.
-    bool merge_vertices = false;
-    bool fill_holes     = false;
-    bool stich_curves   = false;
-    bool tolerance_val  = false;
-
-// Parse command line options.
-    int c; 
-    while ((c = getopt_long (argc, argv, "mfsvh", long_options, NULL)) != -1) {
-        switch (c) {
-        case 'm':
-            merge_vertices = true;
-            break;
-        case 'f':
-            fill_holes = true;
-            break;
-        case 's':
-            stich_curves = true;
-            break;
-        case 'v':
-            version();
-            break;
-        default:
-            usage (EXIT_FAILURE);
-        }
+    if (argc < 3)
+    {
+        printf("输入参数有误:stl2obj \"stl文件路径\" \"保存的obj文件路径\"");
+        return 1;
     }
 
 //  create a geometry tesselation object
     Geometry tessel;
 
 //  fill up the tesselation object with STL data (load STL)
-    tessel.visit (ImportSTL (argv[optind]));
+    tessel.visit (ImportSTL (argv[1]));
 
 //  write down the tesselation object into OBJ file (save OBJ)
-    tessel.visit (ExportOBJ (argv[optind + 1]));
+    tessel.visit (ExportOBJ (argv[2]));
 
-
+    printf("sucess");
     return EXIT_SUCCESS;
 }
 
